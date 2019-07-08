@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link href="style.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.min.css" rel="stylesheet">
+  <title>Inventory App</title>
+</head>
+<body>
+  <div id="app" v-cloak>
+    <v-app>
+        <v-content>
+            <v-toolbar>
+              <v-toolbar-title>Universal Inventory</v-toolbar-title>
+              <v-spacer></v-spacer>
+              <v-toolbar-items>
+                <v-btn flat v-on:click=""> Sign In</v-btn>
+                <v-btn flat v-on:click=""> Sign Up</v-btn>
+              </v-toolbar-items>
+            </v-toolbar>
+
+            <v-navigation-drawer  class="blue lighten-3" dark app v-model="drawer">
+                <v-list>
+                    <v-list-tile>
+                      <v-list-tile-title class="title">
+                        Universal Inventory
+                      </v-list-tile-title>
+                    </v-list-tile>
+
+                    <v-list-tile v-for="item in items" v-on:click="page = item.page">
+                        <v-list-tile-action>
+                          <v-icon>{{ item.icon}}</v-icon>
+                        </v-list-tile-action>
+                        {{item.page}}
+                    </v-list-tile>
+                </v-list>
+
+            </v-navigation-drawer>
+            <v-container grid-list-lg fluid v-if="page == 'dashboard'">
+                <h1> Dashboard </h1>
+            </v-container>
+            <v-container grid-list-lg fluid v-if="page == 'inventory'">
+                <h1> Inventory</h1>
+                <v-layout row wrap>
+                    <v-flex xs2 class="red">
+                        text me
+                    </v-flex>
+                    <v-flex xs2 class="blue">
+                        text me
+                    </v-flex>
+                    <v-flex xs2 class="yellow">
+                        text me
+                    </v-flex>
+                    <v-flex xs2 class="green">
+                        text me
+                    </v-flex>
+                    <v-flex xs2 class="purple">
+                        text me
+                    </v-flex>
+                    <v-flex xs2 class="orange">
+                        text me
+                    </v-flex>
+                </v-layout>
+
+            </v-container>
+            <v-container grid-list-lg fluid v-if="page == 'admin'">
+                <h1> Admin</h1>
+            </v-container>
+
+        </v-content>
+    </v-app>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
