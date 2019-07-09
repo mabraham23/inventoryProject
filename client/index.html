@@ -20,13 +20,14 @@
               </v-toolbar-items>
             </v-toolbar>
 
-            <v-navigation-drawer  class="blue lighten-3" dark app v-model="drawer">
+            <v-navigation-drawer class="blue lighten-3" dark app v-model="drawer">
                 <v-list>
                     <v-list-tile>
                       <v-list-tile-title class="title">
                         Universal Inventory
                       </v-list-tile-title>
                     </v-list-tile>
+                    <v-divider></v-divider>
 
                     <v-list-tile v-for="item in items" v-on:click="page = item.page">
                         <v-list-tile-action>
@@ -42,27 +43,83 @@
             </v-container>
             <v-container grid-list-lg fluid v-if="page == 'inventory'">
                 <h1> Inventory</h1>
-                <v-layout row wrap>
-                    <v-flex xs2 class="red">
-                        text me
-                    </v-flex>
-                    <v-flex xs2 class="blue">
-                        text me
-                    </v-flex>
-                    <v-flex xs2 class="yellow">
-                        text me
-                    </v-flex>
-                    <v-flex xs2 class="green">
-                        text me
-                    </v-flex>
-                    <v-flex xs2 class="purple">
-                        text me
-                    </v-flex>
-                    <v-flex xs2 class="orange">
-                        text me
-                    </v-flex>
-                </v-layout>
 
+                <template>
+                <div>
+                    <v-dialog v-model="dialog" max-width="500px">
+
+                    <template v-slot:activator="{ on }">
+                      <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
+                    </template>
+                    <v-card>
+                      <v-card-title>
+                          <h1> New Item </h1>
+                      </v-card-title>
+
+
+                      <v-card-text>
+                        <v-container grid-list-md>
+                          <v-layout wrap>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newMarketplace" label="MarketPlace"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newImage" label="Image URL"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newTitle" label="Title"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newCategory" label="Category"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newQuantity" label="Qty"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newCost" label="Cost"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newSku" label="SKU"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newLocation" label="Location"></v-text-field>
+                            </v-flex>
+                          </v-layout>
+                        </v-container>
+                      </v-card-text>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" flat @click="">Cancel</v-btn>
+                        <v-btn color="blue darken-1" flat @click="addItem()">Save</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+              </div>
+              </template>
+
+                <v-data-table
+                  :headers="headers"
+                  :items="inventory"
+                  class="elevation-1"
+                >
+                 <template v-slot:items="props">
+                     <td>{{ props.item.marketplace }}</td>
+                     <td><v-img width="100%" v-bind:src="props.item.image"></v-img></td>
+                     <td>{{ props.item.title }}</td>
+                     <td>{{ props.item.quantity }}</td>
+                     <td>{{ props.item.sku }}</td>
+                     <td>{{ props.item.location }}</td>
+                     <td class="justify-center layout px-0">
+                      <v-icon small class="mr-2" @click=""> edit </v-icon>
+                      <v-icon small @click="deleteItem(props.item)"> delete </v-icon>
+                    </td>
+
+                 </template>
+
+
+
+                </v-data-table>
             </v-container>
             <v-container grid-list-lg fluid v-if="page == 'admin'">
                 <h1> Admin</h1>

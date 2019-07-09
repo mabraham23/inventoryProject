@@ -1,19 +1,34 @@
-// const url = "http://localhost:3000";
-const url = "https://codeschool-inventory-project.herokuapp.com";
 
+const url = "https://codeschool-inventory-project.herokuapp.com";
 
 var app = new Vue ({
   el: "#app",
   data: {
       page: "dashboard",
       drawer: true,
+      dialog: false,
       items: [
           { title: 'DashBoard', icon: 'dashboard', page: 'dashboard'},
           { title: 'Inventory', icon: 'shopping_cart', page: 'inventory' },
           { title: 'Admin', icon: 'person', page: 'admin' }
 
         ],
-        inventory: [],
+        headers: [
+        {
+          text: 'MarketPlace',
+          align: 'left',
+          sortable: false,
+          value: 'name'
+        },
+        { text: 'Image', value: 'Image' },
+        { text: 'Title', value: 'Title' },
+        { text: 'qty', value: 'Qty' },
+        { text: 'sku', value: 'SKU' },
+        { text: 'Cost', value: 'Cost' },
+        { text: 'Actions', value: 'name', sortable: false }
+      ],
+
+      inventory: [],
         newSku: "",
         newImage: "",
         newTitle: "",
@@ -23,6 +38,7 @@ var app = new Vue ({
         newCost: "",
         newLocation: "",
   },
+
   created: function() {
       this.getInventory();
   },
@@ -46,6 +62,7 @@ var app = new Vue ({
                 category: this.newCategory,
                 marketplace: this.newMarketplace,
                 quantity: this.newQuantity,
+                cost: this.newCost,
                 location: this.newLocation
             };
             fetch(`${url}/inventory`, {
@@ -68,13 +85,15 @@ var app = new Vue ({
                     app.newQuantity = "";
                     app.newCost = "";
                     app.newLocation = "";
+                    app.dialog= false;
                     app.getInventory();
                 }
             });
         },
         deleteItem: function(item) {
             console.log("Deleting item");
-            fetch(`${url}/inventory/${item.id}`, {
+            confirm("Are you sure you want to delete this item?");
+            fetch(`${url}/inventory/${item._id}`, {
                 method: "DELETE"
             }).then(function(response) {
                 if(response.json == 404) {
