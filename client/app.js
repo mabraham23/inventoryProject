@@ -22,8 +22,10 @@ var app = new Vue ({
         },
         { text: 'Image', value: 'Image' },
         { text: 'Title', value: 'Title' },
+        { text: 'Category', value: 'Category' },
         { text: 'qty', value: 'Qty' },
         { text: 'sku', value: 'SKU' },
+        { text: 'Location', value: 'Location' },
         { text: 'Cost', value: 'Cost' },
         { text: 'Actions', value: 'name', sortable: false }
       ],
