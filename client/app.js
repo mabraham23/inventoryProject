@@ -1,5 +1,5 @@
 // const url = "http://localhost:3000";
-const url = "https://codeschool-inventory-project.herokuapp.com/";
+const url = "https://codeschool-inventory-project.herokuapp.com";
 
 
 var app = new Vue ({
@@ -71,7 +71,50 @@ var app = new Vue ({
                     app.getInventory();
                 }
             });
-        }
+        },
+        deleteItem: function(item) {
+            console.log("Deleting item");
+            fetch(`${url}/inventory/${item.id}`, {
+                method: "DELETE"
+            }).then(function(response) {
+                if(response.json == 404) {
+                    response.json().then(function(data) {
+                        alert(data.msg);
+                    });
+                } else if(response.status == 204) {
+                    app.getInventory();
+                }
+            });
+        },
+        updateInventory: function(item) {
+            console.log("Updating item");
+            var req_body = {
+                sku: item.sku,
+                image: item.image,
+                title: item.title,
+                category: item.category,
+                marketplace: item.marketplace,
+                quantity: item.quantity,
+                cost: item.cost,
+                location: item.location
+            };
+            fetch(`${url}/inventory/${item.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(req_body)
+            }).then(function(response) {
+                if(response.status == 400 || response.status == 404) {
+                    response.json().then(function(data) {
+                        alert(data.msg);
+                    });
+                } else if(response.status == 204) {
+                    item.editing = false;
+                    app.getInventory();
+                }
+            });
+        },
     },
 
 
