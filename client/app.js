@@ -31,9 +31,9 @@ var app = new Vue ({
       ],
       filteredItems: [],
       marketplaces: [],
-      marketplaceType: null,
-      categories: ["all, shoe", "cooking", "books", "sports", "entertainment"],
-      categoryType: null,
+      marketplaceType: "all",
+      categories: ["all", "shoe", "cooking", "books", "sports", "entertainment"],
+      categoryType: "all",
 
       inventory: [],
         newSku: "",
@@ -145,7 +145,7 @@ var app = new Vue ({
     },
     computed: {
         marketplaceList: function() {
-            this.marketplaces = [];
+            this.marketplaces = ["all"];
             this.inventory.forEach((item) => {
                 if (!this.marketplaces.includes(item.marketplace)) {
                     this.marketplaces.push(item.marketplace);
@@ -159,12 +159,12 @@ var app = new Vue ({
         },
         filteredMarketplace: function() {
             return this.inventory.filter((i) => {
-                return this.marketplaceType == null || (i.marketplace == this.marketplaceType);
+                return this.marketplaceType == "all" || (i.marketplace == this.marketplaceType);
             })
         },
         filteredCategory: function() {
             return this.inventory.filter((i) => {
-                return this.categoryType == null || (i.category == this.categoryType);
+                return this.categoryType == "all" || (i.category == this.categoryType);
             })
         }
     }
