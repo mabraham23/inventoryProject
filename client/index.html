@@ -43,7 +43,17 @@
             </v-container>
             <v-container grid-list-lg fluid v-if="page == 'inventory'">
                 <h1> Inventory</h1>
-
+                <v-select
+                  label="Marketplace"
+                  :items="marketplaces"
+                  v-model="marketplaceType"
+                ></v-select>
+                <v-select
+                  label="Category"
+                  :items="categories"
+                  v-model="categoryType"
+                ></v-select>
+                
                 <template>
                 <div>
                     <v-dialog v-model="dialog" max-width="500px">
@@ -100,9 +110,9 @@
 
                 <v-data-table
                   :headers="headers"
-                  :items="inventory"
+                  :items="filteredItem"
                   class="elevation-1"
-                >
+                > <!--change to filtered items-->
                  <template v-slot:items="props">
                      <td>{{ props.item.marketplace }}</td>
                      <td><v-img width="100%" v-bind:src="props.item.image"></v-img></td>

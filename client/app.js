@@ -29,6 +29,11 @@ var app = new Vue ({
         { text: 'Cost', value: 'Cost' },
         { text: 'Actions', value: 'name', sortable: false }
       ],
+      filteredItems: [],
+      marketplaces: [],
+      marketplaceType: null,
+      categories: ["all, shoe", "cooking", "books", "sports", "entertainment"],
+      categoryType: null,
 
       inventory: [],
         newSku: "",
@@ -52,6 +57,7 @@ var app = new Vue ({
                 response.json().then(function(data) {
                     console.log(data);
                     app.inventory = data.inventory
+                    app.marketplaceList
                 });
             });
         },
@@ -137,7 +143,31 @@ var app = new Vue ({
             });
         },
     },
-
+    computed: {
+        marketplaceList: function() {
+            this.marketplaces = [];
+            this.inventory.forEach((item) => {
+                if (!this.marketplaces.includes(item.marketplace)) {
+                    this.marketplaces.push(item.marketplace);
+                }
+            })
+        },
+        filteredItem: function() {
+            return this.filteredCategory.filter((i) => {
+                return this.filteredMarketplace.includes(i);
+            })
+        },
+        filteredMarketplace: function() {
+            return this.inventory.filter((i) => {
+                return this.marketplaceType == null || (i.marketplace == this.marketplaceType);
+            })
+        },
+        filteredCategory: function() {
+            return this.inventory.filter((i) => {
+                return this.categoryType == null || (i.category == this.categoryType);
+            })
+        }
+    }
 
 
 });
