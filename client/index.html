@@ -165,7 +165,12 @@
                         <v-container grid-list-md>
                           <v-layout wrap>
                             <v-flex xs12 sm6 md4>
-                              <v-text-field v-model="newMarketplace" label="MarketPlace"></v-text-field>
+                              <v-select
+                                v-model="newMarketplace"
+                                label="MarketPlace"
+                                :items="marketplaces"
+                                >
+                              </v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
                               <v-text-field v-model="newImage" label="Image URL"></v-text-field>
@@ -174,7 +179,12 @@
                               <v-text-field v-model="newTitle" label="Title"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                              <v-text-field v-model="newCategory" label="Category"></v-text-field>
+                              <v-select
+                                v-model="newCategory"
+                                label="Category"
+                                :items="categories"
+                                >
+                              </v-select>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
                               <v-text-field v-model="newQuantity" label="Qty"></v-text-field>
