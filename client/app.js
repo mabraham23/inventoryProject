@@ -4,6 +4,7 @@ const url = "https://codeschool-inventory-project.herokuapp.com";
 var app = new Vue ({
   el: "#app",
   data: {
+      todaysdate: new Date(),
       page: "dashboard",
       drawer: true,
       dialog: false,
@@ -29,6 +30,26 @@ var app = new Vue ({
         { text: 'Cost', value: 'Cost' },
         { text: 'Actions', value: 'name', sortable: false }
       ],
+      events: [
+          {
+            title: 'Vacation',
+            details: 'Going to the beach!',
+            date: '2019-07-12',
+            open: false
+          },
+          {
+            title: 'Vacation',
+            details: 'Going to the beach!',
+            date: '2019-07-11',
+            open: false
+          },
+          {
+            title: 'Vacation',
+            details: 'Going to the beach!',
+            date: '2019-07-15',
+            open: false
+          },
+      ],
       filteredItems: [],
       marketplaces: [],
       marketplaceType: "all",
@@ -44,6 +65,8 @@ var app = new Vue ({
         newQuantity: "",
         newCost: "",
         newLocation: "",
+        re_render: true,
+
   },
 
   created: function() {
@@ -51,6 +74,10 @@ var app = new Vue ({
   },
 
     methods: {
+
+        cancelnewitem: function(){
+            this.dialog = false;
+        },
         getInventory: function() {
             console.log("Getting Inventory");
             fetch(`${url}/inventory`).then(function(response) {
@@ -144,6 +171,11 @@ var app = new Vue ({
         },
     },
     computed: {
+        eventsMap() {
+            const map = {}
+            this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e))
+            return map
+        },
         marketplaceList: function() {
             this.marketplaces = ["all"];
             this.inventory.forEach((item) => {

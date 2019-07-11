@@ -20,7 +20,7 @@
               </v-toolbar-items>
             </v-toolbar>
 
-            <v-navigation-drawer class="blue lighten-3" dark app v-model="drawer">
+            <v-navigation-drawer class="blue darken-1" dark app v-model="drawer">
                 <v-list>
                     <v-list-tile>
                       <v-list-tile-title class="title">
@@ -40,6 +40,97 @@
             </v-navigation-drawer>
             <v-container grid-list-lg fluid v-if="page == 'dashboard'">
                 <h1> Dashboard </h1>
+                <v-layout row>
+                    <v-flex xs6>
+                        <v-card>
+                            <v-card-title>
+                                <v-icon size="80px" left color="#ff5252" class="mb-10" z-index="1">
+                                    insert_chart
+                                </v-icon>
+                                    Total Inventory Items {{inventory.length}}
+                            </v-card-title>
+                        </v-card>
+                    </v-flex>
+                    <v-flex xs6>
+                        <v-card>
+                            <v-card-title>
+                                <v-icon size="80px" left color="#FFEB3B" class="mb-10" z-index="1">
+                                    monetization_on
+                                </v-icon>
+                                Total Sales
+                            </v-card-title>
+                        </v-card>
+                    </v-flex>
+                </v-layout>
+                <v-layout row>
+                    <v-flex xs6>
+                        <v-card>
+                            <v-card-title>
+                                <v-icon size="80px" left color="#8E24AA" class="mb-10" z-index="1">
+                                    local_shipping
+                                </v-icon>
+                                    Total Orders Shipped
+                            </v-card-title>
+                        </v-card>
+                    </v-flex>
+                    <!-- <v-flex xs6>
+                        <v-card>
+                            <v-card-title>
+                                <v-icon size="80px" left color="#FFEB3B" class="mb-10" z-index="1">
+                                    monetization_on
+                                </v-icon>
+                                Total Sales
+                            </v-card-title>
+                        </v-card>
+                    </v-flex> -->
+                </v-layout>
+                <v-layout row>
+
+                    <v-flex xs12>
+
+                            <h1> Calendar <h2>{{todaysdate}}</h2></h1>
+
+                            <v-calendar v-if="re_render" color="#00C853">
+                                <template v-slot:day="{ date }">
+                                    <template v-for="event in eventsMap[date]">
+                                      <v-menu :key="event.title" v-model="event.open" full-width offset-x>
+                                        <template v-slot:activator="{ on }">
+                                          <div
+                                            v-if="!event.time"
+                                            v-ripple
+                                            class="my-event"
+                                            v-on="on"
+                                            v-html="event.title"
+                                          ></div>
+                                        </template>
+                                        <v-card
+                                          color="#00C853"
+                                          min-width="350px"
+                                          flat
+                                        >
+                                            <v-toolbar color="#00C853" dark>
+                                                <v-toolbar-title>
+                                                    {{event.title}}
+                                                </v-toolbar-title>
+                                                <v-spacer></v-spacer>
+                                            </v-toolbar>
+                                            <v-card>
+                                                <v-card-title primary-title dark>
+                                                    {{event.details}}
+                                                </v-card-title>
+                                                <v-card-actions>
+                                                    <v-btn flat>
+                                                            Cancel
+                                                    </v-btn>
+                                                    </v-card-actions>
+                                                </v-card>
+                                            </v-card>
+                                        </v-menu>
+                                    </template>
+                                </template>
+                            </v-calendar>
+                    </v-flex>
+                </v-layout>
             </v-container>
             <v-container grid-list-lg fluid v-if="page == 'inventory'">
                 <h1> Inventory</h1>
@@ -53,13 +144,16 @@
                   :items="categories"
                   v-model="categoryType"
                 ></v-select>
-                
+
                 <template>
                 <div>
                     <v-dialog v-model="dialog" max-width="500px">
-
                     <template v-slot:activator="{ on }">
-                      <v-btn color="primary" dark class="mb-2" v-on="on">New Item</v-btn>
+                        <v-layout justify-end row>
+                            <v-flex xs2>
+                                <v-btn color="blue darken-1" dark class="mb-2 " v-on="on">New Item</v-btn>
+                            </v-flex>
+                        </v-layout>
                     </template>
                     <v-card>
                       <v-card-title>
@@ -100,7 +194,7 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat @click="">Cancel</v-btn>
+                        <v-btn color="blue darken-1" flat @click="cancelnewitem()">Cancel</v-btn>
                         <v-btn color="blue darken-1" flat @click="addItem()">Save</v-btn>
                       </v-card-actions>
                     </v-card>
