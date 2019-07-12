@@ -216,20 +216,113 @@
                   :headers="headers"
                   :items="filteredItem"
                   class="elevation-1"
-                > <!--change to filtered items-->
+                >
                  <template v-slot:items="props">
-                     <td>{{ props.item.marketplace }}</td>
-                     <td><v-img width="100%" v-bind:src="props.item.image"></v-img></td>
-                     <td>{{ props.item.title }}</td>
-                     <td>{{ props.item.category}}</td>
-                     <td>{{ props.item.quantity }}</td>
-                     <td>{{ props.item.sku }}</td>
-                     <td>{{ props.item.location }}</td>
-                     <td>{{ props.item.cost }}</td>
-                     <td class="layout">
-                              <v-icon class="mr-2 align-center pt-4" small  @click=""> edit </v-icon>
+                   <td v-if="!editing[props.index].show">{{ props.item.marketplace }}</td>
+                   <td v-else >
+                     <v-text-field
+                         v-model="props.item.marketplace"
+                         label="Edit"
+                         single-line
+                         height="20"
+                         mb-0
+                         class="!text-field_details"
+                        ></v-text-field>
+                   </td>
+                     <!-- <td><v-img width="100%" v-bind:src="props.item.image"></v-img></td> -->
+                     <td v-if="!editing[props.index].show">
+                        <v-img width="100%" v-bind:src="props.item.image"></v-img>
+                      </td>
+                     <td v-else >
+                       <v-text-field
+                           v-model="props.item.image"
+                           label="Edit"
+                           single-line
+                           height="20"
+                           mb-0
+                           class="!text-field_details"
+                          ></v-text-field>
+                     </td>
+                     <td v-if="!editing[props.index].show">{{ props.item.title }}</td>
+                     <td v-else >
+                       <v-text-field
+                           v-model="props.item.title"
+                           label="Edit"
+                           single-line
+                           height="20"
+                           mb-0
+                           class="!text-field_details"
+                          ></v-text-field>
+                     </td>
+                     <td v-if="!editing[props.index].show">{{ props.item.category }}</td>
+                     <td v-else >
+                       <v-text-field
+                           v-model="props.item.category"
+                           label="Edit"
+                           single-line
+                           height="20"
+                           mb-0
+                           class="!text-field_details"
+                          ></v-text-field>
+                     </td>
+                     <td v-if="!editing[props.index].show">{{ props.item.quantity }}</td>
+                     <td v-else >
+                       <v-text-field
+                           v-model="props.item.quantity"
+                           label="Edit"
+                           single-line
+                           height="20"
+                           mb-0
+                           class="!text-field_details"
+                          ></v-text-field>
+                     </td>
+                     <td v-if="!editing[props.index].show">{{ props.item.sku }}</td>
+                     <td v-else >
+                       <v-text-field
+                           v-model="props.item.sku"
+                           label="Edit"
+                           single-line
+                           height="20"
+                           mb-0
+                           class="!text-field_details"
+                          ></v-text-field>
+                     </td>
+                     <td v-if="!editing[props.index].show">{{ props.item.location }}</td>
+                     <td v-else >
+                       <v-text-field
+                           v-model="props.item.location"
+                           label="Edit"
+                           single-line
+                           height="20"
+                           mb-0
+                           class="!text-field_details"
+                          ></v-text-field>
+                     </td>
+                     <td v-if="!editing[props.index].show">{{ props.item.cost }}</td>
+                     <td v-else >
+                       <v-text-field
+                           v-model="props.item.cost"
+                           label="Edit"
+                           single-line
+                           height="20"
+                           mb-0
+                           class="!text-field_details"
+                          ></v-text-field>
+                     </td>
+                     <td
+                        class="layout"
+                        v-if="!editing[props.index].show">
+                              <v-icon class="mr-2 align-center pt-4" small  @click="updateList(props.index)"> edit </v-icon>
                               <v-icon class="mr-2 align-center pt-4" small @click="deleteItem(props.item)"> delete </v-icon>
                     </td>
+                    <td
+                      class="layout"
+                      v-else >
+                        <v-btn class="white--text" color="red" @click="editing[props.index].show = !editing[props.index].show">cancel</v-btn>
+                        <v-btn class="white--text" color="blue darken-1" @click="updateInventory(props.item, props.index)">save</v-btn>
+                    </td>
+
+
 
                  </template>
 

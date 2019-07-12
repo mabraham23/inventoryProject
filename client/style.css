@@ -12,3 +12,7 @@
     cursor: pointer;
     margin-bottom: 1px;
   }
+
+.v-text-field__details {
+  display: none;
+}

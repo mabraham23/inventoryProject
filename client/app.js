@@ -8,6 +8,8 @@ var app = new Vue ({
       page: "dashboard",
       drawer: true,
       dialog: false,
+      editing: [],
+      max25chars: v => v.length <= 25 || 'Input too long!',
       items: [
           { title: 'DashBoard', icon: 'dashboard', page: 'dashboard'},
           { title: 'Inventory', icon: 'shopping_cart', page: 'inventory' },
@@ -74,6 +76,12 @@ var app = new Vue ({
   },
 
     methods: {
+        updateList: function(index) {
+          var new_editing = this.editing;
+          new_editing[index].show = !new_editing[index].show;
+          this.editing = new_editing;
+          // console.log(this.editing);
+        },
 
         cancelnewitem: function(){
             this.dialog = false;
@@ -84,7 +92,10 @@ var app = new Vue ({
                 response.json().then(function(data) {
                     console.log(data);
                     app.inventory = data.inventory
-                    app.marketplaceList
+                    app.marketplaceList;
+                    app.inventory.forEach(function(product) {
+                      app.editing.push({show: false});
+                    });
                 });
             });
         },
@@ -140,7 +151,7 @@ var app = new Vue ({
                 }
             });
         },
-        updateInventory: function(item) {
+        updateInventory: function(item, index) {
             console.log("Updating item");
             var req_body = {
                 sku: item.sku,
@@ -152,7 +163,7 @@ var app = new Vue ({
                 cost: item.cost,
                 location: item.location
             };
-            fetch(`${url}/inventory/${item.id}`, {
+            fetch(`${url}/inventory/${item._id}`, {
                 method: "PUT",
                 headers: {
                     "Content-type": "application/json"
@@ -163,9 +174,11 @@ var app = new Vue ({
                     response.json().then(function(data) {
                         alert(data.msg);
                     });
-                } else if(response.status == 204) {
+                } else if(response.status == 200) {
+                  console.log(app.editing)
                     item.editing = false;
                     app.getInventory();
+                    app.editing[index].show = !app.editing[index].show;
                 }
             });
         },
