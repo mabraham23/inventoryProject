@@ -9,6 +9,9 @@ var app = new Vue ({
       drawer: true,
       dialog: false,
       editing: [],
+      login_username: "",
+      login_password: "",
+      isLoggedIn: true,
       max25chars: v => v.length <= 25 || 'Input too long!',
       items: [
           { title: 'DashBoard', icon: 'dashboard', page: 'dashboard'},
@@ -76,6 +79,32 @@ var app = new Vue ({
   },
 
     methods: {
+      login: function() {
+                fetch(`${url}/users/login`, {
+                  method: "POST",
+                  credentials: "include",
+                  headers: {
+                    "Content-type": "application/json"
+                  },
+                  body: JSON.stringify({
+                    username: this.login_username,
+                    password: this.login_password
+                  })
+                }).then(function(response) {
+                  if (response.status == 200) {
+                    response.json().then(function(data) {
+                      app.isLoggedIn = false;
+                      console.log("we did it")
+                    });
+                  }
+                  else if (response.status == 403) {
+                    response.json().then(function(data) {
+                      alert(data.msg);
+                    })
+                  }
+                });
+              },
+
         updateList: function(index) {
           var new_editing = this.editing;
           new_editing[index].show = !new_editing[index].show;
@@ -89,6 +118,9 @@ var app = new Vue ({
         getInventory: function() {
             console.log("Getting Inventory");
             fetch(`${url}/inventory`).then(function(response) {
+              if (response.status == 403) {
+                this.isLoggedIn = false
+              } else {
                 response.json().then(function(data) {
                     console.log(data);
                     app.inventory = data.inventory
@@ -97,6 +129,7 @@ var app = new Vue ({
                       app.editing.push({show: false});
                     });
                 });
+              }
             });
         },
         addItem: function() {

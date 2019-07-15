@@ -10,13 +10,31 @@
 <body>
   <div id="app" v-cloak>
     <v-app>
-        <v-content>
+        <v-content v-if="isLoggedIn == true">
+          <v-form>
+            <v-text-field
+              v-model="login_username"
+              label="Email"
+              required
+              >
+            </v-text-field>
+            <v-text-field
+              v-model="login_password"
+              label="Password"
+              required
+              >
+            </v-text-field>
+            <v-btn
+              @click="login()"
+              >login
+            </v-btn>
+        </v-content>
+        <v-content v-else>
             <v-toolbar>
               <v-toolbar-title>Universal Inventory</v-toolbar-title>
               <v-spacer></v-spacer>
               <v-toolbar-items>
-                <v-btn flat v-on:click=""> Sign In</v-btn>
-                <v-btn flat v-on:click=""> Sign Up</v-btn>
+                <v-btn flat v-on:click=""> Log Out</v-btn>
               </v-toolbar-items>
             </v-toolbar>
 
