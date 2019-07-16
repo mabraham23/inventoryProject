@@ -111,9 +111,9 @@ var app = new Vue ({
                 } else {
                     response.json().then(function(data) {
                         alert(data.msg);
-                    })
+                    });
                 }
-            }
+            });
         },
 
         updateList: function(index) {
