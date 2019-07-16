@@ -7,6 +7,8 @@ var app = new Vue ({
       todaysdate: new Date(),
       page: "dashboard",
       drawer: true,
+      date: new Date().toISOString().substr(0, 10),
+      menu: false,
       dialog: false,
       editing: [],
       login_username: "",
@@ -16,6 +18,7 @@ var app = new Vue ({
       items: [
           { title: 'DashBoard', icon: 'dashboard', page: 'dashboard'},
           { title: 'Inventory', icon: 'shopping_cart', page: 'inventory' },
+          { title: 'Orders', icon: 'store', page: 'orders' },
           { title: 'Admin', icon: 'person', page: 'admin' }
 
         ],

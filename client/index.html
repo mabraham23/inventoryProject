@@ -31,7 +31,7 @@
         </v-content>
         <v-content v-else>
             <v-toolbar>
-              <v-toolbar-title>Universal Inventory</v-toolbar-title>
+              <v-toolbar-title><span class="font-weight-thin">Universal</span> <span>Inventory</span></v-toolbar-title>
               <v-spacer></v-spacer>
               <v-toolbar-items>
                 <v-btn flat v-on:click=""> Log Out</v-btn>
@@ -42,7 +42,7 @@
                 <v-list>
                     <v-list-tile>
                       <v-list-tile-title class="title">
-                        Universal Inventory
+                        <span class="font-weight-thin">Universal</span> <span>Inventory</span>
                       </v-list-tile-title>
                     </v-list-tile>
                     <v-divider></v-divider>
@@ -87,7 +87,7 @@
                                 <v-icon size="80px" left color="#8E24AA" class="mb-10" z-index="1">
                                     local_shipping
                                 </v-icon>
-                                    Total Orders Shipped
+                                    Total Orders To Be Shipped
                             </v-card-title>
                         </v-card>
                     </v-flex>
@@ -348,13 +348,140 @@
 
                 </v-data-table>
             </v-container>
-            <v-container grid-list-lg fluid v-if="page == 'admin'">
-                <h1> Admin</h1>
-            </v-container>
+            <v-container grid-list-lg fluid v-if="page == 'orders'">
+                <h1> Orders</h1>
+                <v-select
+                  label="Marketplace"
+                  :items="marketplaces"
+                  v-model="marketplaceType"
+                ></v-select>
+                <v-select
+                  label="Category"
+                  :items="categories"
+                  v-model="categoryType"
+                ></v-select>
 
-        </v-content>
-    </v-app>
-  </div>
+                <template>
+                <div>
+                    <v-dialog v-model="dialog" max-width="500px">
+                    <template v-slot:activator="{ on }">
+                        <v-layout justify-end row>
+                            <v-flex xs2>
+                                <v-btn color="blue darken-1" dark class="mb-2 " v-on="on">New Order</v-btn>
+                            </v-flex>
+                        </v-layout>
+                    </template>
+                    <v-card>
+                      <v-card-title>
+                          <h1> New Order </h1>
+                      </v-card-title>
+
+
+                      <v-card-text>
+                        <v-container grid-list-md>
+                          <v-layout wrap>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newMarketplace" label="MarketPlace"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newImage" label="Image URL"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newTitle" label="Title"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newCategory" label="Category"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newQuantity" label="Qty"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newCost" label="Cost"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newSku" label="SKU"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-text-field v-model="newLocation" label="Location"></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 sm6 md4>
+                              <v-menu
+                                ref="menu"
+                                v-model="menu"
+                                :close-on-content-click="false"
+                                :nudge-right="40"
+                                :return-value.sync="date"
+                                lazy
+                                transition="scale-transition"
+                                offset-y
+                                full-width
+                                min-width="290px"
+                              >
+                                <template v-slot:activator="{ on }">
+                                  <v-text-field
+                                    v-model="date"
+                                    label="Start Date"
+                                    prepend-icon="event"
+                                    readonly
+                                    v-on="on"
+                                  ></v-text-field>
+                                </template>
+                                <v-date-picker v-model="date" no-title scrollable>
+                                  <v-spacer></v-spacer>
+                                  <v-text-field label="Title">Title</v-text-field>
+                                  <v-spacer></v-spacer>
+                                  <v-text-field label="Details">Details</v-text-field>
+                                  <v-spacer></v-spacer>
+                                  <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                                  <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+                                </v-date-picker>
+                              </v-menu>
+                            </v-flex>
+                          </v-layout>
+                        </v-container>
+                      </v-card-text>
+
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="blue darken-1" flat @click="cancelnewitem()">Cancel</v-btn>
+                        <v-btn color="blue darken-1" flat @click="addItem()">Save</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-dialog>
+              </div>
+              </template>
+
+                <v-data-table
+                  :headers="headers"
+                  :items="filteredItem"
+                  class="elevation-1"
+                > <!--change to filtered items-->
+                 <template v-slot:items="props">
+                     <td>{{ props.item.marketplace }}</td>
+                     <td><v-img width="100%" v-bind:src="props.item.image"></v-img></td>
+                     <td>{{ props.item.title }}</td>
+                     <td>{{ props.item.category}}</td>
+                     <td>{{ props.item.quantity }}</td>
+                     <td>{{ props.item.sku }}</td>
+                     <td>{{ props.item.location }}</td>
+                     <td>{{ props.item.cost }}</td>
+                     <td class="layout">
+                              <v-icon class="mr-2 align-center pt-4" small  @click=""> edit </v-icon>
+                              <v-icon class="mr-2 align-center pt-4" small @click="deleteItem(props.item)"> delete </v-icon>
+                    </td>
+
+                 </template>
+
+
+
+                </v-data-table>
+                </v-container>
+                        <v-container grid-list-lg fluid v-if="page == 'admin'">
+                            <h1> Admin</h1>
+                        </v-container>
+                    </v-content>
+                </v-app>
+            </div>
   <script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify/dist/vuetify.js"></script>
   <script src="app.js"></script>
