@@ -79,37 +79,48 @@ var app = new Vue ({
   },
 
     methods: {
-      login: function() {
-                fetch(`${url}/users/login`, {
-                  method: "POST",
-                  credentials: "include",
-                  headers: {
+        login: function() {
+            fetch(`${url}/users/login`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
                     "Content-type": "application/json"
-                  },
-                  body: JSON.stringify({
+                },
+                body: JSON.stringify({
                     username: this.login_username,
                     password: this.login_password
-                  })
-                }).then(function(response) {
-                  if (response.status == 200) {
+                })
+            }).then(function(response) {
+                if (response.status == 200) {
                     response.json().then(function(data) {
-                      app.isLoggedIn = false;
-                      console.log("we did it")
+                        app.isLoggedIn = false;
+                        console.log("we did it")
                     });
-                  }
-                  else if (response.status == 403) {
+                }
+                else if (response.status == 403) {
                     response.json().then(function(data) {
-                      alert(data.msg);
+                        alert(data.msg);
                     })
-                  }
-                });
-              },
+                }
+            });
+        },
+        logout: function() {
+            fetch(`${url}/logout`).then(function(response) {
+                if(response.status == 200) {
+                    this.isLoggedIn = true
+                } else {
+                    response.json().then(function(data) {
+                        alert(data.msg);
+                    })
+                }
+            }
+        },
 
         updateList: function(index) {
-          var new_editing = this.editing;
-          new_editing[index].show = !new_editing[index].show;
-          this.editing = new_editing;
-          // console.log(this.editing);
+            var new_editing = this.editing;
+            new_editing[index].show = !new_editing[index].show;
+            this.editing = new_editing;
+            // console.log(this.editing);
         },
 
         cancelnewitem: function(){
@@ -118,18 +129,18 @@ var app = new Vue ({
         getInventory: function() {
             console.log("Getting Inventory");
             fetch(`${url}/inventory`).then(function(response) {
-              if (response.status == 403) {
-                this.isLoggedIn = false
-              } else {
-                response.json().then(function(data) {
-                    console.log(data);
-                    app.inventory = data.inventory
-                    app.marketplaceList;
-                    app.inventory.forEach(function(product) {
-                      app.editing.push({show: false});
+                if (response.status == 403) {
+                    this.isLoggedIn = false
+                } else {
+                    response.json().then(function(data) {
+                        console.log(data);
+                        app.inventory = data.inventory
+                        app.marketplaceList;
+                        app.inventory.forEach(function(product) {
+                          app.editing.push({show: false});
+                        });
                     });
-                });
-              }
+                }
             });
         },
         addItem: function() {
