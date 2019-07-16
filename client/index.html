@@ -10,46 +10,59 @@
 <body>
   <div id="app" v-cloak>
     <v-app>
-      <v-content v-if="isLoggedIn == false"
-        >
-        <v-container>
+      <v-content v-if="isLoggedIn == false">
+        <v-container
+          fill-height>
           <v-layout
-            justify: center
-            align-cetner
-            row wrap
-          >
-            <v-flex
-              xs2>
-            </v-flex>
-            <v-flex
-              xs8>
-              <v-card
-                >
-                <v-form>
-                  <v-text-field
-                    v-model="login_username"
-                    label="Email"
-                    required
-                    >
-                  </v-text-field>
-                  <v-text-field
-                    v-model="login_password"
-                    label="Password"
-                    required
-                    :type="show1 ? 'text' : 'password'"
-                    @click:append="show1 = !show1"
-                    :append-icon="show1 ? 'visibility' : 'visibility_off'"
-                    >
-                  </v-text-field>
-                  <v-btn
-                    @click="login()"
-                    >login
-                  </v-btn>
-              </v-card>
-            </v-flex>
-            <v-flex
-              xs2>
-            </v-flex>
+            align-center>
+              <v-flex
+                xs1>
+              </v-flex>
+              <v-flex
+                xs10>
+                <v-card
+                  height=400>
+                  <v-container
+                    fill-height>
+                    <v-layout
+                      align-center>
+                      <v-flex xs2></v-flex>
+                        <v-flex xs8>
+                          <v-form>
+                              <v-text-field
+                                v-model="login_username"
+                                label="Email"
+                                required
+                                >
+                              </v-text-field>
+                              <v-text-field
+                                v-model="login_password"
+                                label="Password"
+                                required
+                                :type="show1 ? 'text' : 'password'"
+                                @click:append="show1 = !show1"
+                                :append-icon="show1 ? 'visibility' : 'visibility_off'"
+                                >
+                              </v-text-field>
+                              <v-layout
+                                justify-space-between>
+                                <v-btn
+                                  @click="login()"
+                                  >login
+                                </v-btn>
+                                <v-btn
+                                  @click="login()"
+                                  >register
+                                </v-btn>
+                              </v-layout>
+                            </v-container>
+                          </v-form>
+                        </v-flex>
+                      <!-- <v-flex xs2></v-flex> -->
+                    </v-layout>
+                  </v-card>
+              </v-flex>
+              <v-flex xs1></v-flex>
           </v-layout>
         </v-container>
       </v-content>
