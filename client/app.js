@@ -13,6 +13,8 @@ var app = new Vue ({
       editing: [],
       login_username: "",
       login_password: "",
+      register_username: "",
+      register_password: "",
       isLoggedIn: false,
       show1: false,
       max25chars: v => v.length <= 25 || 'Input too long!',
@@ -117,6 +119,30 @@ var app = new Vue ({
                         alert(data.msg);
                     });
                 }
+            });
+        },
+        register: function() {
+            fetch(`${url}/users/register`, {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: this.register_username,
+                    password: this.register_password
+                })
+            }).then(function(response) {
+                if (response.status == 422 || response.status == 400) {
+					response.json().then(function(data) {
+						alert(data.msg);
+                        app.isLoggedIn = true;
+					})
+				} else if (response.status == 201) {
+					console.log("It worked");
+                    app.isLoggedIn = false;
+                    app.getInventory();
+				}
             });
         },
 
