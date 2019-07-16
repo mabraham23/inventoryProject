@@ -13,7 +13,7 @@ var app = new Vue ({
       editing: [],
       login_username: "",
       login_password: "",
-      isLoggedIn: true,
+      isLoggedIn: false,
       show1: false,
       max25chars: v => v.length <= 25 || 'Input too long!',
       items: [
