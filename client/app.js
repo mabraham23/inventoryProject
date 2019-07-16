@@ -14,6 +14,7 @@ var app = new Vue ({
       login_username: "",
       login_password: "",
       isLoggedIn: true,
+      show1: false,
       max25chars: v => v.length <= 25 || 'Input too long!',
       items: [
           { title: 'DashBoard', icon: 'dashboard', page: 'dashboard'},
@@ -96,8 +97,8 @@ var app = new Vue ({
             }).then(function(response) {
                 if (response.status == 200) {
                     response.json().then(function(data) {
-                        app.isLoggedIn = false;
-                        console.log("we did it")
+                        app.isLoggedIn = true;
+                        app.getInventory();
                     });
                 }
                 else if (response.status == 403) {
@@ -131,19 +132,22 @@ var app = new Vue ({
         },
         getInventory: function() {
             console.log("Getting Inventory");
-            fetch(`${url}/inventory`).then(function(response) {
-                if (response.status == 403) {
-                    this.isLoggedIn = false
-                } else {
-                    response.json().then(function(data) {
-                        console.log(data);
-                        app.inventory = data.inventory
-                        app.marketplaceList;
-                        app.inventory.forEach(function(product) {
-                          app.editing.push({show: false});
-                        });
+            fetch(`${url}/inventory`, {
+              credentials: "include",
+            }).then(function(response) {
+              if (response.status == 403) {
+                this.isLoggedIn = false
+              } else {
+                response.json().then(function(data) {
+                    console.log(data);
+                    app.isLoggedIn = true;
+                    app.inventory = data.inventory;
+                    app.marketplaceList;
+                    app.inventory.forEach(function(product) {
+                      app.editing.push({show: false});
                     });
-                }
+                });
+              }
             });
         },
         addItem: function() {

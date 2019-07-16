@@ -10,25 +10,49 @@
 <body>
   <div id="app" v-cloak>
     <v-app>
-        <v-content v-if="isLoggedIn == true">
-          <v-form>
-            <v-text-field
-              v-model="login_username"
-              label="Email"
-              required
-              >
-            </v-text-field>
-            <v-text-field
-              v-model="login_password"
-              label="Password"
-              required
-              >
-            </v-text-field>
-            <v-btn
-              @click="login()"
-              >login
-            </v-btn>
-        </v-content>
+      <v-content v-if="isLoggedIn == false"
+        >
+        <v-container>
+          <v-layout
+            justify: center
+            align-cetner
+            row wrap
+          >
+            <v-flex
+              xs2>
+            </v-flex>
+            <v-flex
+              xs8>
+              <v-card
+                >
+                <v-form>
+                  <v-text-field
+                    v-model="login_username"
+                    label="Email"
+                    required
+                    >
+                  </v-text-field>
+                  <v-text-field
+                    v-model="login_password"
+                    label="Password"
+                    required
+                    :type="show1 ? 'text' : 'password'"
+                    @click:append="show1 = !show1"
+                    :append-icon="show1 ? 'visibility' : 'visibility_off'"
+                    >
+                  </v-text-field>
+                  <v-btn
+                    @click="login()"
+                    >login
+                  </v-btn>
+              </v-card>
+            </v-flex>
+            <v-flex
+              xs2>
+            </v-flex>
+          </v-layout>
+        </v-container>
+      </v-content>
         <v-content v-else>
             <v-toolbar>
               <v-toolbar-title><span class="font-weight-thin">Universal</span> <span>Inventory</span></v-toolbar-title>
