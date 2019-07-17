@@ -50,10 +50,48 @@
                                   @click="login()"
                                   >login
                                 </v-btn>
-                                <v-btn
-                                  @click="login()"
-                                  >register
-                                </v-btn>
+                                <v-template>
+                                  <v-layout>
+                                    <v-dialog v-model="dialogRegister" persistent max-width="600px">
+                                      <template v-slot:activator="{ on }">
+                                        <v-btn
+                                          v-on="on"
+                                          >register
+                                        </v-btn>
+                                      </template>
+                                      <v-card>
+                                        <v-card-title>
+                                          <span class="headline">Register</span>
+                                        </v-card-title>
+                                        <v-card-text>
+                                          <v-container grid-list-md>
+                                            <v-layout wrap>
+                                              <v-flex xs12>
+                                                <v-text-field v-model="register_username" label="New Username*" required></v-text-field>
+                                              </v-flex>
+                                              <v-flex xs12>
+                                                <v-text-field
+                                                  v-model="register_password"
+                                                  label="New Password*"
+                                                  required
+                                                  :type="show2 ? 'text' : 'password'"
+                                                  @click:append="show2 = !show2"
+                                                  :append-icon="show2 ? 'visibility' : 'visibility_off'"
+                                                  >
+                                                </v-text-field>
+                                              </v-flex>
+                                            </v-layout>
+                                          </v-container>
+                                        </v-card-text>
+                                        <v-card-actions>
+                                          <v-spacer></v-spacer>
+                                          <v-btn color="blue darken-1" flat @click="dialogRegister = false">Cancel</v-btn>
+                                          <v-btn color="blue darken-1" flat @click="register(), dialogRegister = false">Save</v-btn>
+                                        </v-card-actions>
+                                      </v-card>
+                                    </v-dialog>
+                                  </v-layout>
+                                </v-template>
                               </v-layout>
                           </v-form>
                         </v-flex>
@@ -70,6 +108,10 @@
             <v-toolbar>
               <v-toolbar-title><span class="font-weight-thin">Universal</span> <span>Inventory</span></v-toolbar-title>
               <v-spacer></v-spacer>
+              <v-toolbar-title
+                class="body-2">
+                Hello, {{currentUser}}
+              </v-toolbar-title>
               <v-toolbar-items>
                 <v-btn flat v-on:click="logout()"> Log Out</v-btn>
               </v-toolbar-items>
@@ -199,7 +241,15 @@
                   :items="categories"
                   v-model="categoryType"
                 ></v-select>
+                <v-text-field
+                  v-model="search"
+                  append-icon="search"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
 
+                <!--new item button -->
                 <template>
                 <div>
                     <v-dialog v-model="dialog" max-width="500px">
@@ -267,10 +317,12 @@
               </div>
               </template>
 
+              <!-- Inventory List -->
                 <v-data-table
                   :headers="headers"
                   :items="filteredItem"
                   class="elevation-1"
+                  :search="search"
                 >
                  <template v-slot:items="props">
                    <td v-if="!editing[props.index].show">{{ props.item.marketplace }}</td>
@@ -284,7 +336,6 @@
                          class="!text-field_details"
                         ></v-text-field>
                    </td>
-                     <!-- <td><v-img width="100%" v-bind:src="props.item.image"></v-img></td> -->
                      <td v-if="!editing[props.index].show">
                         <v-img width="100%" v-bind:src="props.item.image"></v-img>
                       </td>
@@ -376,15 +427,16 @@
                         <v-btn class="white--text" color="red" @click="editing[props.index].show = !editing[props.index].show">cancel</v-btn>
                         <v-btn class="white--text" color="blue darken-1" @click="updateInventory(props.item, props.index)">save</v-btn>
                     </td>
-
-
-
-                 </template>
-
-
-
+                  </template>
+                  <template v-slot:no-results>
+                    <v-alert :value="true" color="error" icon="warning">
+                      Your search for "{{ search }}" found no results.
+                    </v-alert>
+                  </template>
                 </v-data-table>
             </v-container>
+
+            <!-- Orders Page -->
             <v-container grid-list-lg fluid v-if="page == 'orders'">
                 <h1> Orders</h1>
                 <v-select

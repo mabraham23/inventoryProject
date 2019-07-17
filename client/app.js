@@ -10,13 +10,17 @@ var app = new Vue ({
       date: new Date().toISOString().substr(0, 10),
       menu: false,
       dialog: false,
+      dialogRegister: false,
       editing: [],
+      currentUser: "",
       login_username: "",
       login_password: "",
       register_username: "",
       register_password: "",
       isLoggedIn: false,
       show1: false,
+      show2: false,
+      search: '',
       max25chars: v => v.length <= 25 || 'Input too long!',
       items: [
           { title: 'DashBoard', icon: 'dashboard', page: 'dashboard'},
@@ -100,6 +104,7 @@ var app = new Vue ({
                 if (response.status == 200) {
                     response.json().then(function(data) {
                         app.isLoggedIn = true;
+                        app.currentUser = app.login_username;
                         app.getInventory();
                     });
                 }
