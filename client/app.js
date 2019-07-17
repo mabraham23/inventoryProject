@@ -112,8 +112,11 @@ var app = new Vue ({
         },
         logout: function() {
             fetch(`${url}/logout`).then(function(response) {
-                if(response.status == 200) {
-                    this.isLoggedIn = true
+                if(response.status == 200 ) {
+                  console.log(response.status)
+                    app.isLoggedIn = false;
+                    console.log(app.isLoggedIn);
+                    // app.getInventory();
                 } else {
                     response.json().then(function(data) {
                         alert(data.msg);
