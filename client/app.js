@@ -34,15 +34,15 @@ var app = new Vue ({
           text: 'MarketPlace',
           align: 'left',
           sortable: false,
-          value: 'name'
+          value: 'marketplace'
         },
         { text: 'Image', value: 'Image' },
-        { text: 'Title', value: 'Title' },
-        { text: 'Category', value: 'Category' },
-        { text: 'qty', value: 'Qty' },
-        { text: 'sku', value: 'SKU' },
-        { text: 'Location', value: 'Location' },
-        { text: 'Cost', value: 'Cost' },
+        { text: 'Title', value: 'title' },
+        { text: 'Category', value: 'category' },
+        { text: 'qty', value: 'quantity' },
+        { text: 'sku', value: 'sku' },
+        { text: 'Location', value: 'location' },
+        { text: 'Cost', value: 'cost' },
         { text: 'Actions', value: 'name', sortable: false }
       ],
       events: [
@@ -104,7 +104,6 @@ var app = new Vue ({
                 if (response.status == 200) {
                     response.json().then(function(data) {
                         app.isLoggedIn = true;
-                        app.currentUser = app.login_username;
                         app.getInventory();
                     });
                 }
@@ -116,7 +115,9 @@ var app = new Vue ({
             });
         },
         logout: function() {
-            fetch(`${url}/logout`).then(function(response) {
+            fetch(`${url}/logout`, {
+              credentials: "include"
+          }).then(function(response) {
                 if(response.status == 200 ) {
                   console.log(response.status)
                     app.isLoggedIn = false;
@@ -158,6 +159,7 @@ var app = new Vue ({
             var new_editing = this.editing;
             new_editing[index].show = !new_editing[index].show;
             this.editing = new_editing;
+            this.getInventory();
             // console.log(this.editing);
         },
 
@@ -176,6 +178,7 @@ var app = new Vue ({
                     console.log(data);
                     app.isLoggedIn = true;
                     app.inventory = data.inventory;
+                    app.currentUser = data.user_name;
                     app.marketplaceList;
                     app.inventory.forEach(function(product) {
                       app.editing.push({show: false});
@@ -198,6 +201,7 @@ var app = new Vue ({
             };
             fetch(`${url}/inventory`, {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-type": "application/json"
                 },
@@ -225,7 +229,8 @@ var app = new Vue ({
             console.log("Deleting item");
             confirm("Are you sure you want to delete this item?");
             fetch(`${url}/inventory/${item._id}`, {
-                method: "DELETE"
+                method: "DELETE",
+                credentials: "include",
             }).then(function(response) {
                 if(response.json == 404) {
                     response.json().then(function(data) {
@@ -250,6 +255,7 @@ var app = new Vue ({
             };
             fetch(`${url}/inventory/${item._id}`, {
                 method: "PUT",
+                credentials: "include",
                 headers: {
                     "Content-type": "application/json"
                 },
