@@ -5,6 +5,8 @@ var app = new Vue ({
   el: "#app",
   data: {
       todaysdate: new Date(),
+      detail: "",
+      calTitle: "",
       page: "dashboard",
       drawer: true,
       date: new Date().toISOString().substr(0, 10),
@@ -116,6 +118,17 @@ var app = new Vue ({
   },
 
     methods: {
+
+        newevent: function(){
+            var new_event = {
+                title: this.calTitle,
+                details: this.detail,
+                date: this.date,
+                open: false,
+            };
+            this.events.push(new_event);
+        },
+
         login: function() {
             fetch(`${url}/users/login`, {
                 method: "POST",
@@ -248,6 +261,7 @@ var app = new Vue ({
                     app.newCost = "";
                     app.newLocation = "";
                     app.dialog= false;
+                    app.newevent();
                     app.getInventory();
                 }
             });
