@@ -452,6 +452,13 @@
                   :items="categories"
                   v-model="categoryType"
                 ></v-select>
+                <v-text-field
+                  v-model="search"
+                  append-icon="search"
+                  label="Search"
+                  single-line
+                  hide-details
+                ></v-text-field>
 
                 <template>
                 <div>
@@ -473,61 +480,31 @@
                         <v-container grid-list-md>
                           <v-layout wrap>
                             <v-flex xs12 sm6 md4>
-                              <v-text-field v-model="newMarketplace" label="MarketPlace"></v-text-field>
+                              <v-text-field v-model="newOrderCustomer" label="Customer"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                              <v-text-field v-model="newImage" label="Image URL"></v-text-field>
+                              <v-text-field v-model="newOrderSku" label="Sku"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                              <v-text-field v-model="newTitle" label="Title"></v-text-field>
+                              <v-text-field v-model="newOrderTitle" label="Title"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                              <v-text-field v-model="newCategory" label="Category"></v-text-field>
+                              <v-select v-model="newCategory" label="Category"
+                              :items="categories">
+                          </v-select>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                              <v-text-field v-model="newQuantity" label="Qty"></v-text-field>
+                              <v-text-field v-model="newOrderQuantity" label="Qty"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                              <v-text-field v-model="newCost" label="Cost"></v-text-field>
+                              <v-text-field v-model="newOrderPrice" label="Price"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                              <v-text-field v-model="newSku" label="SKU"></v-text-field>
+                              <v-select v-model="newMarketplace" label="Marketplace"
+                              :items="marketplaces"></v-select>
                             </v-flex>
                             <v-flex xs12 sm6 md4>
-                              <v-text-field v-model="newLocation" label="Location"></v-text-field>
-                            </v-flex>
-                            <v-flex xs12 sm6 md4>
-                              <v-menu
-                                ref="menu"
-                                v-model="menu"
-                                :close-on-content-click="false"
-                                :nudge-right="40"
-                                :return-value.sync="date"
-                                lazy
-                                transition="scale-transition"
-                                offset-y
-                                full-width
-                                min-width="290px"
-                              >
-                                <template v-slot:activator="{ on }">
-                                  <v-text-field
-                                    v-model="date"
-                                    label="Start Date"
-                                    prepend-icon="event"
-                                    readonly
-                                    v-on="on"
-                                  ></v-text-field>
-                                </template>
-                                <v-date-picker v-model="date" no-title scrollable>
-                                  <v-spacer></v-spacer>
-                                  <v-text-field label="Title">Title</v-text-field>
-                                  <v-spacer></v-spacer>
-                                  <v-text-field label="Details">Details</v-text-field>
-                                  <v-spacer></v-spacer>
-                                  <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-                                  <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
-                                </v-date-picker>
-                              </v-menu>
+                              <v-text-field v-model="newOrderLocation" label="Location"></v-text-field>
                             </v-flex>
                           </v-layout>
                         </v-container>
@@ -535,8 +512,8 @@
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="blue darken-1" flat @click="cancelnewitem()">Cancel</v-btn>
-                        <v-btn color="blue darken-1" flat @click="addItem()">Save</v-btn>
+                        <v-btn color="blue darken-1" flat @click="cancelNewOrder()">Cancel</v-btn>
+                        <v-btn color="blue darken-1" flat @click="addOrder()">Save</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -544,22 +521,22 @@
               </template>
 
                 <v-data-table
-                  :headers="headers"
-                  :items="filteredItem"
+                  :headers="Orderheaders"
+                  :order="filteredOrders"
                   class="elevation-1"
                 > <!--change to filtered items-->
                  <template v-slot:items="props">
-                     <td>{{ props.item.marketplace }}</td>
-                     <td><v-img width="100%" v-bind:src="props.item.image"></v-img></td>
-                     <td>{{ props.item.title }}</td>
-                     <td>{{ props.item.category}}</td>
-                     <td>{{ props.item.quantity }}</td>
-                     <td>{{ props.item.sku }}</td>
-                     <td>{{ props.item.location }}</td>
-                     <td>{{ props.item.cost }}</td>
+                     <td>{{ props.order.customer }}</td>
+                     <td>{{ props.order.sku }}</td>
+                     <td>{{ props.order.title }}</td>
+                     <td>{{ props.order.category}}</td>
+                     <td>{{ props.order.quantity }}</td>
+                     <td>{{ props.order.marketplace }}</td>
+                     <td>{{ props.order.location }}</td>
+                     <td>{{ props.order.price }}</td>
                      <td class="layout">
-                              <v-icon class="mr-2 align-center pt-4" small  @click=""> edit </v-icon>
-                              <v-icon class="mr-2 align-center pt-4" small @click="deleteItem(props.item)"> delete </v-icon>
+                              <v-icon class="mr-2 align-center pt-4" small  @click="updateOrderList(props.index)"> edit </v-icon>
+                              <v-icon class="mr-2 align-center pt-4" small @click="deleteOrder(props.order)"> delete </v-icon>
                     </td>
 
                  </template>

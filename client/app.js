@@ -45,6 +45,22 @@ var app = new Vue ({
         { text: 'Cost', value: 'cost' },
         { text: 'Actions', value: 'name', sortable: false }
       ],
+      Orderheaders: [
+      {
+        text: 'Customer',
+        align: 'left',
+        sortable: false,
+        value: 'name'
+      },
+      { text: 'Sku', value: 'SKU' },
+      { text: 'Title', value: 'Title' },
+      { text: 'Category', value: 'Category' },
+      { text: 'qty', value: 'Qty' },
+      { text: 'MarketPlace', value: 'MarketPlace' },
+      { text: 'Location', value: 'Location' },
+      { text: 'Price', value: 'Price' },
+      { text: 'Actions', value: 'name', sortable: false }
+    ],
       events: [
           {
             title: 'Vacation',
@@ -66,6 +82,7 @@ var app = new Vue ({
           },
       ],
       filteredItems: [],
+      filteredOrders: [],
       marketplaces: [],
       marketplaceType: "all",
       categories: ["all", "shoe", "cooking", "books", "sports", "entertainment"],
@@ -80,6 +97,16 @@ var app = new Vue ({
         newQuantity: "",
         newCost: "",
         newLocation: "",
+
+        newOrderCustomer: "",
+        newOrderSku: "",
+        newOrderTitle: "",
+        newOrderCategory: "",
+        newOrderMarketplace: "",
+        newOrderQuantity: "",
+        newOrderPrice: "",
+        newOrderLocation: "",
+
         re_render: true,
 
   },
