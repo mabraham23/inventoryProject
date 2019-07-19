@@ -341,6 +341,43 @@ var app = new Vue ({
               }
             });
         },
+        addOrder: function() {
+            console.log("Adding Order");
+            var req_body = {
+                customer: this.newOrderCustomer,
+                sku: this.newOrderSku,
+                title: this.newOrderTitle,
+                category: this.newOrderCategory,
+                marketplace: this.newOrderMarketplace,
+                quantity: this.newOrderQuantity,
+                price: this.newOrderPrice,
+                location: this.newOrderLocation
+            };
+            fetch(`${url}/order`, {
+                method: "POST",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(req_body)
+            }).then(function(response) {
+                if(response.status == 400) {
+                    response.json().then(function(data) {
+                        alert(data.msg);
+                    })
+                } else if (response.status == 201) {
+                    app.newOrderCustomer = "";
+                    app.newOrderSku = "";
+                    app.newOrderTitle = "";
+                    app.newOrderCategory = "";
+                    app.newOrderMarketplace = "";
+                    app.newOrderQuantity = "";
+                    app.newOrderPrice = "";
+                    app.newOrderLocation = "";
+                    app.dialog= false;
+                    app.getOrder();
+                }
+            });
+        },
     },
     computed: {
         eventsMap() {
