@@ -15,6 +15,7 @@ var app = new Vue ({
       dialogRegister: false,
       dialogOrder: false,
       editing: [],
+      order_editing: [],
       currentUser: "",
       login_username: "",
       login_password: "",
@@ -197,6 +198,13 @@ var app = new Vue ({
             });
         },
 
+        updateOrderList: function(index) {
+            var new_editing = this.order_editing;
+            new_editing[index].show = !new_editing[index].show;
+            this.order_editing = new_editing;
+            console.log(this.order_editing);
+        },
+
         updateList: function(index) {
             var new_editing = this.editing;
             new_editing[index].show = !new_editing[index].show;
@@ -332,10 +340,9 @@ var app = new Vue ({
                     console.log(data);
                     app.isLoggedIn = true;
                     app.order = data.order;
-                    app.currentUser = data.user_name;
                     app.marketplaceList;
                     app.order.forEach(function(order) {
-                     app.editing.push({show: false});
+                     app.order_editing.push({show: false});
                     });
                 });
               }
@@ -373,7 +380,7 @@ var app = new Vue ({
                     app.newOrderQuantity = "";
                     app.newOrderPrice = "";
                     app.newOrderLocation = "";
-                    app.dialog= false;
+                    app.dialogOrder= false;
                     app.getOrder();
                 }
             });
@@ -390,6 +397,37 @@ var app = new Vue ({
                     });
                 } else if(response.status == 204) {
                     app.getOrder();
+                }
+            });
+        },
+        updateOrder: function(order, index) {
+            console.log("Updating order");
+            var req_body = {
+                customer: order.customer,
+                sku: order.sku,
+                title: order.title,
+                category: order.category,
+                marketplace: order.marketplace,
+                quantity: order.quantity,
+                price: order.price,
+                location: order.location
+            };
+            fetch(`${url}/order/${order._id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-type": "application/json"
+                },
+                body: JSON.stringify(req_body)
+            }).then(function(response) {
+                if(response.status == 400 || response.status == 404) {
+                    response.json().then(function(data) {
+                        alert(data.msg);
+                    });
+                } else if(response.status == 200) {
+                  console.log(app.order_editing)
+                    order.order_editing = false;
+                    app.getOrder();
+                    app.order_editing[index].show = !app.order_editing[index].show;
                 }
             });
         },

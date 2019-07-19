@@ -576,7 +576,7 @@
                       class="!text-field_details"
                      ></v-text-field>
                 </td>
-                  <td >{{ props.item.sku}}</td>
+                  <td v-if="!order_editing[props.index].show">{{ props.item.sku}}</td>
                   <td v-else >
                     <v-text-field
                         v-model="props.item.sku"
@@ -587,7 +587,7 @@
                         class="!text-field_details"
                        ></v-text-field>
                   </td>
-                  <td >{{ props.item.title }}</td>
+                  <td v-if="!order_editing[props.index].show">{{ props.item.title }}</td>
                   <td v-else >
                     <v-text-field
                         v-model="props.item.title"
@@ -598,7 +598,7 @@
                         class="!text-field_details"
                        ></v-text-field>
                   </td>
-                  <td >{{ props.item.category }}</td>
+                  <td v-if="!order_editing[props.index].show">{{ props.item.category }}</td>
                   <td v-else >
                     <v-text-field
                         v-model="props.item.category"
@@ -609,7 +609,7 @@
                         class="!text-field_details"
                        ></v-text-field>
                   </td>
-                  <td >{{ props.item.quantity }}</td>
+                  <td v-if="!order_editing[props.index].show">{{ props.item.quantity }}</td>
                   <td v-else >
                     <v-text-field
                         v-model="props.item.quantity"
@@ -620,10 +620,10 @@
                         class="!text-field_details"
                        ></v-text-field>
                   </td>
-                  <td >{{ props.item.sku }}</td>
+                  <td v-if="!order_editing[props.index].show">{{ props.item.marketplace }}</td>
                   <td v-else >
                     <v-text-field
-                        v-model="props.item.sku"
+                        v-model="props.item.marketplace"
                         label="Edit"
                         single-line
                         height="20"
@@ -631,7 +631,7 @@
                         class="!text-field_details"
                        ></v-text-field>
                   </td>
-                  <td >{{ props.item.location }}</td>
+                  <td v-if="!order_editing[props.index].show">{{ props.item.location }}</td>
                   <td v-else >
                     <v-text-field
                         v-model="props.item.location"
@@ -655,15 +655,15 @@
                   </td>
                   <td
                      class="layout"
-                     >
-                           <v-icon class="mr-2 align-center pt-4" small  @click="updateList(props.index)"> edit </v-icon>
+                     v-if="!order_editing[props.index].show">
+                           <v-icon class="mr-2 align-center pt-4" small  @click="updateOrderList(props.index)"> edit </v-icon>
                            <v-icon class="mr-2 align-center pt-4" small @click="deleteOrder(props.item)"> delete </v-icon>
                  </td>
                  <td
                    class="layout"
                    v-else >
-                     <v-btn class="white--text" color="red" @click="editing[props.index].show = !editing[props.index].show">cancel</v-btn>
-                     <v-btn class="white--text" color="blue darken-1" @click="updateInventory(props.item, props.index)">save</v-btn>
+                     <v-btn class="white--text" color="red" @click="updateOrderList(props.index)">cancel</v-btn>
+                     <v-btn class="white--text" color="blue darken-1" @click="updateOrder(props.item, props.index)">save</v-btn>
                  </td>
                </template>
                <template v-slot:no-results>
