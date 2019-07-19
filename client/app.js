@@ -378,6 +378,21 @@ var app = new Vue ({
                 }
             });
         },
+        deleteOrder: function(order) {
+            console.log("Deleting order");
+            confirm("Are you sure you want to delete this order?");
+            fetch(`${url}/order/${order._id}`, {
+                method: "DELETE"
+            }).then(function(response) {
+                if(response.json == 404) {
+                    response.json().then(function(data) {
+                        alert(data.msg);
+                    });
+                } else if(response.status == 204) {
+                    app.getOrder();
+                }
+            });
+        },
     },
     computed: {
         eventsMap() {
