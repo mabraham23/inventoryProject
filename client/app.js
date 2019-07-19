@@ -100,7 +100,7 @@ var app = new Vue ({
         newQuantity: "",
         newCost: "",
         newLocation: "",
-
+        order: [],
         newOrderCustomer: "",
         newOrderSku: "",
         newOrderTitle: "",
@@ -116,6 +116,7 @@ var app = new Vue ({
 
   created: function() {
       this.getInventory();
+      this.getOrder();
   },
 
     methods: {
@@ -319,6 +320,27 @@ var app = new Vue ({
                 }
             });
         },
+        getOrder: function() {
+            console.log("Getting Order");
+            fetch(`${url}/order`, {
+              credentials: "include",
+            }).then(function(response) {
+              if (response.status == 403) {
+                this.isLoggedIn = false
+              } else {
+                response.json().then(function(data) {
+                    console.log(data);
+                    app.isLoggedIn = true;
+                    app.order = data.order;
+                    app.currentUser = data.user_name;
+                    app.marketplaceList;
+                    app.order.forEach(function(order) {
+                     app.editing.push({show: false});
+                    });
+                });
+              }
+            });
+        },
     },
     computed: {
         eventsMap() {
@@ -348,7 +370,13 @@ var app = new Vue ({
             return this.inventory.filter((i) => {
                 return this.categoryType == "all" || (i.category == this.categoryType);
             })
-        }
+        },
+        filteredOrders: function() {
+            return this.filteredCategory.filter((i) => {
+                return this.filteredMarketplace.includes(i);
+            })
+        },
+
     }
 
 
