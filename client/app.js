@@ -13,6 +13,7 @@ var app = new Vue ({
       menu: false,
       dialog: false,
       dialogRegister: false,
+      dialogOrder: false,
       editing: [],
       currentUser: "",
       login_username: "",
@@ -205,6 +206,9 @@ var app = new Vue ({
 
         cancelnewitem: function(){
             this.dialog = false;
+        },
+        cancelNewOrder: function(){
+            this.dialogOrder = false;
         },
         getInventory: function() {
             console.log("Getting Inventory");
