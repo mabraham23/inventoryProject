@@ -241,7 +241,8 @@ var app = new Vue ({
                 marketplace: this.newMarketplace,
                 quantity: this.newQuantity,
                 cost: this.newCost,
-                location: this.newLocation
+                location: this.newLocation,
+                date: this.date,
             };
             fetch(`${url}/inventory`, {
                 method: "POST",
@@ -322,7 +323,7 @@ var app = new Vue ({
     computed: {
         eventsMap() {
             const map = {}
-            this.events.forEach(e => (map[e.date] = map[e.date] || []).push(e))
+            this.inventory.forEach(e => (map[e.date] = map[e.date] || []).push(e))
             return map
         },
         marketplaceList: function() {

@@ -189,15 +189,15 @@
 
                             <v-calendar v-if="re_render" color="#00C853">
                                 <template v-slot:day="{ date }">
-                                    <template v-for="event in eventsMap[date]">
-                                      <v-menu :key="event.title" v-model="event.open" full-width offset-x>
+                                    <template v-for="item in eventsMap[date]">
+                                      <v-menu :key="item.title" v-model="item.open" full-width offset-x>
                                         <template v-slot:activator="{ on }">
                                           <div
-                                            v-if="!event.time"
+                                            v-if="!item.time"
                                             v-ripple
                                             class="my-event"
                                             v-on="on"
-                                            v-html="event.title"
+                                            v-html="item.title"
                                           ></div>
                                         </template>
                                         <v-card
@@ -207,13 +207,13 @@
                                         >
                                             <v-toolbar color="#00C853" dark>
                                                 <v-toolbar-title>
-                                                    {{event.title}}
+                                                    {{item.title}}
                                                 </v-toolbar-title>
                                                 <v-spacer></v-spacer>
                                             </v-toolbar>
                                             <v-card>
                                                 <v-card-title primary-title dark>
-                                                    {{event.details}}
+                                                    {{item.marketplace}} - {{item.category}}
                                                 </v-card-title>
                                                 <v-card-actions>
                                                     <v-btn flat>
@@ -337,9 +337,7 @@
                                       </template>
                                       <v-date-picker v-model="date" no-title scrollable>
                                         <v-spacer></v-spacer>
-                                        <v-text-field v-model="calTitle" label="Title"></v-text-field>
-                                        <v-spacer></v-spacer>
-                                        <v-text-field v-model="detail" label="Details"></v-text-field>
+                                        <v-text-field v-model="newTitle" label="Title"></v-text-field>
                                         <v-spacer></v-spacer>
                                         <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
                                         <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
