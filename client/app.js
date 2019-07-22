@@ -12,6 +12,7 @@ var app = new Vue ({
       date: new Date().toISOString().substr(0, 10),
       menu: false,
       dialog: false,
+      dialogThree: false,
       dialogRegister: false,
       dialogOrder: false,
       editing: [],

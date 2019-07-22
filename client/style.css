@@ -16,3 +16,7 @@
 .v-text-field__details {
   display: none;
 }
+
+.dashboard {
+  background-color: white;
+}

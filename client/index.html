@@ -135,19 +135,87 @@
                 </v-list>
 
             </v-navigation-drawer>
+
+            <!-- Dashboard -->
             <v-container grid-list-lg fluid v-if="page == 'dashboard'">
                 <h1> Dashboard </h1>
                 <v-layout row>
-                    <v-flex xs6>
-                        <v-card>
-                            <v-card-title>
-                                <v-icon size="80px" left color="#ff5252" class="mb-10" z-index="1">
-                                    insert_chart
-                                </v-icon>
-                                    Total Inventory Items {{inventory.length}}
-                            </v-card-title>
-                        </v-card>
-                    </v-flex>
+                  <template>
+                    <v-dialog
+                      v-model="dialogThree"
+                      width="800"
+                    >
+                      <template v-slot:activator="{ on }">
+                          <v-card
+                            v-on="on"
+                          >
+                              <v-card-title>
+                                  <v-icon size="80px" left color="#ff5252" class="mb-10" z-index="1">
+                                      insert_chart
+                                  </v-icon>
+                                      Total Inventory Items {{inventory.length}}
+                              </v-card-title>
+                          </v-card>
+                      </template>
+
+                      <template>
+                        <v-layout>
+                          <v-flex xs8 offset-xs2>
+                            <v-card>
+                              <v-container grid-list-xl fluid>
+                                <h1> Inventory </h1>
+                                <v-layout row wrap>
+                                  <v-flex
+                                    v-for="item in inventory"
+                                    :key="item"
+                                    xs4
+                                    d-flex
+                                  >
+                                    <v-badge
+                                      color="red"
+                                      right
+                                      overlap
+                                    >
+                                      <template v-slot:badge v-if="item.quantity <= 3">
+                                        <span>!</span>
+                                      </template>
+                                        <v-card>
+                                          <v-img
+                                            class="dashboard"
+                                            :src="item.image"
+                                            aspect-ratio="1.2"
+                                            class="grey lighten-2"
+                                            contain
+                                          >
+                                          <template v-slot:placeholder>
+                                            <v-layout
+                                              fill-height
+                                              align-center
+                                              justify-center
+                                              ma-0
+                                            >
+                                              <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                                            </v-layout>
+                                          </template>
+                                        </v-img>
+                                        <v-card-title>
+                                            Marketplace: {{item.marketplace}}<br>
+                                            Title: {{item.title}}<br>
+                                            Quantity: {{item.quantity}}
+                                        </v-card-title>
+                                      </v-card>
+                                    </v-badge>
+                                  </v-flex>
+                                </v-layout>
+                              </v-container>
+                            </v-card>
+                          </v-flex>
+                        </v-layout>
+                      </template>
+                    </v-dialog>
+                  </template>
+
+
                     <v-flex xs6>
                         <v-card>
                             <v-card-title>
