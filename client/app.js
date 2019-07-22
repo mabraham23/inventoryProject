@@ -148,6 +148,7 @@ var app = new Vue ({
                     response.json().then(function(data) {
                         app.isLoggedIn = true;
                         app.getInventory();
+                        app.getOrder();
                     });
                 }
                 else if (response.status == 403) {
@@ -194,6 +195,7 @@ var app = new Vue ({
 					console.log("It worked");
                     app.isLoggedIn = false;
                     app.getInventory();
+                    app.getOrder();
 				}
             });
         },
